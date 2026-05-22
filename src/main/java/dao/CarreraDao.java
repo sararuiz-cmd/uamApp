@@ -13,22 +13,23 @@ public class CarreraDao implements CRUDinterface<Carrera>{
 
     @Override
     public List<Carrera> listar() {
-        List<Carrera>carreras=new ArrayList<>();
-        EntityManager em= JPAUtil.getEntityManager();
-        try{
-            carreras=em.createQuery("SELECT c from Carrera c, Carrera .class").getResultList();
-        }catch (Exception ex){
-            ex.printStackTrace();
+        EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+
+        try {
+            return em.createQuery("SELECT c FROM Carrera c", Carrera.class)
+                    .getResultList();
+        } finally {
+            em.close();
         }
-        return carreras;
     }
 
     @Override
     public void guardar(Carrera object) {
         EntityManager em=JPAUtil.getEntityManager();
         try {
-            em.persist(object);
             em.getTransaction().begin();
+            em.persist(object);
+
             em.getTransaction().commit();
         }catch (Exception ex){
             em.getTransaction().rollback();
