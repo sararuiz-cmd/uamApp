@@ -3,11 +3,42 @@ import modelos.Carrera;
 
 public class Main {
     public static void main(String[] args) {
-        Carrera is=new Carrera(null,"Ingenieria de sistemas",250);
-        CarreraDao registro=new CarreraDao();
-        registro.guardar(is);
-        for (Carrera c:registro.listar()){
+
+        CarreraDao registro = new CarreraDao();
+
+        // GUARDAR
+        Carrera nuevaCarrera = new Carrera(null, "Ingeniería de Sistemas", 250);
+        registro.guardar(nuevaCarrera);
+
+        // LISTAR
+        System.out.println("Lista de carreras:");
+        for (Carrera c : registro.listar()) {
             System.out.println(c);
         }
+
+        // BUSCAR POR ID
+        Carrera carreraEncontrada = registro.buscarPorId(1L);
+
+        if (carreraEncontrada != null) {
+            System.out.println("Carrera encontrada:");
+            System.out.println(carreraEncontrada);
+        } else {
+            System.out.println("No se encontró la carrera.");
+        }
+
+        // ACTUALIZAR
+        Carrera carreraActualizar = registro.buscarPorId(1L);
+
+        if (carreraActualizar != null) {
+            carreraActualizar.setNombre("Ingeniería en Sistemas Actualizada");
+            carreraActualizar.setPrecio(300);
+            registro.actualizar(carreraActualizar);
+        }
+
+        // ELIMINAR
+        // registro.eliminar(1L);
+
+        // Cerrar EntityManagerFactory al final
+        configuracion.JPAUtil.close();
     }
 }
